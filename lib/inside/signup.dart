@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xchat/inside/widgets/widget.dart';
+import 'package:xchat/services/auth.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -8,15 +9,35 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
+  bool isLoading= false;
+  AuthMethods authMethods=new AuthMethods();
+
+  final formKey= GlobalKey<FormState>();
   TextEditingController userNameTxtE = new TextEditingController();
   TextEditingController emailTxtE = new TextEditingController();
   TextEditingController passwordTxtE = new TextEditingController();
+
+  SignMeUp(){
+    if(formKey.currentState.validate()){
+      setState(() {
+              isLoading=true;
+            });
+
+      authMethods.sgnUpWithmailandPas(emailTxtE.text ,
+       passwordTxtE.text).then((val) {
+         print("$val");
+       });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
-      body: SingleChildScrollView(
+      body: isLoading? Container(
+        child: Center(child: CircularProgressIndicator()),
+      ):SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height-100,
           alignment: Alignment.bottomCenter,
@@ -24,21 +45,46 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(
-                  controller: userNameTxtE,
-                    style: simpleTextStyle(),
-                    decoration: signinInput("User Name")),
-                TextField(
-                  controller: emailTxtE,
-                    style: simpleTextStyle(),
-                    decoration: signinInput("email or number")),
-                TextField(
-                  controller: passwordTxtE,
-                    style: simpleTextStyle(),
-                    decoration: signinInput("password")),
+                ///txt field for signup page
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                  ///USER NAME FIELD
+                  TextFormField(
+                    validator: (val){
+                      return val.isEmpty || val.length<12 ? "invalid user name":null;
+                    },
+                    controller: userNameTxtE,
+                      style: simpleTextStyle(),
+                      decoration: signinInput("User Name")),
+                  ///Email area
+                  TextFormField(
+                    validator: (val){
+                      return RegExp
+                      (r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val)?null:
+                       "Provide a emailid";
+                    },
+                    controller: emailTxtE,
+                      style: simpleTextStyle(),
+                      decoration: signinInput("email or number")),
+                  ///pasword area
+                  TextFormField(
+                    obscureText: true,
+                    validator: (val){
+                      return val.length>6?null:"provide atlist 6 character";
+                    },
+                    controller: passwordTxtE,
+                      style: simpleTextStyle(),
+                      decoration: signinInput("password")),
+                    ],
+                  ),
+                ),
+                ///for space.Work like a line breaker
                 SizedBox(
                   height: 8,
                 ),
+                ///FORGETpassword desing
                 Container(
                   alignment: Alignment.centerRight,
                   child: Container(
@@ -49,19 +95,27 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 8,
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.amber,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text(
-                    "Sign up",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
+                ///GESTUREDETECTOR can turn anything into button even image or text
+                GestureDetector(
+                  onTap: (){
+                    SignMeUp();
+                    ///button work
+                  
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Text(
+                      "Sign up",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
