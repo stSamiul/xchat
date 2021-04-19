@@ -1,76 +1,50 @@
-import 'package:chatapp/models/user.dart';
-import 'package:chatapp/views/chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:xchat/modal/user.dart' as UserModal;
 
-class AuthService {
+//await Firebase.initializeApp();
+
+class AuthMethods {
+  
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+  ///CONDITION ? TRUE:FALSE
+  UserModal.MyUser _userFromFirebaseUser(User user) {
+    return user != null ? UserModal.MyUser(userId: user.uid):null;
   }
-
+  ///SIGNIN OPTIONS
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
+      UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
+      User firebaseUser = result.user;
+      return _userFromFirebaseUser(firebaseUser);
     } catch (e) {
-      print(e.toString());
-      return null;
+      print(e);
     }
   }
-
-  Future signUpWithEmailAndPassword(String email, String password) async {
-    try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
+  ///SIGNUP OPTIONS
+  Future sgnUpWithmailandPas(String email,String password)async{
+    try{
+      UserCredential result=await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User firebaseUser =result.user;
+      return _userFromFirebaseUser(firebaseUser);
+    }catch(e){
+      print(e);
+    }
+    
+  }
+  Future resetPass(String email){
+    try{
+      return _auth.sendPasswordResetEmail(email: email);
+    }catch(e){
+      print(e);
     }
   }
+  Future signOut(){
+    try{
+      return _auth.signOut();
 
-  Future resetPass(String email) async {
-    try {
-      return await _auth.sendPasswordResetEmail(email: email);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
+    }catch(e){
 
-  Future<FirebaseUser> signInWithGoogle(BuildContext context) async {
-    final GoogleSignIn _googleSignIn = new GoogleSignIn();
-
-    final GoogleSignInAccount googleSignInAccount =
-        await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: googleSignInAuthentication.idToken,
-        accessToken: googleSignInAuthentication.accessToken);
-
-    AuthResult result = await _auth.signInWithCredential(credential);
-    FirebaseUser userDetails = result.user;
-
-    if (result == null) {
-    } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Chat()));
-    }
-  }
-
-  Future signOut() async {
-    try {
-      return await _auth.signOut();
-    } catch (e) {
-      print(e.toString());
-      return null;
     }
   }
 }
