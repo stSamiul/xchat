@@ -1,6 +1,10 @@
 # xchat
 
-A new Flutter project.
+A new Flutter chat app project.
+This is not ready I am building this app.And the name is not constant.I will change it whenever I find a suitable name.You can sugest me.
+I am thinking about a open source chat app which won't collect any user sensetive data so that no one lost his/her virtual privacy.
+If you want you can help me devolap this app.
+Thank You.
 
 ## Getting Started
 
