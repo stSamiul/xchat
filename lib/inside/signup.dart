@@ -1,5 +1,7 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xchat/inside/chathome.dart';
 import 'package:xchat/inside/widgets/widget.dart';
 import 'package:xchat/services/auth.dart';
 
@@ -26,7 +28,8 @@ class _SignUpState extends State<SignUp> {
 
       authMethods.sgnUpWithmailandPas(emailTxtE.text ,
        passwordTxtE.text).then((val) {
-         print("$val");
+         print("${val.uid}");
+         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatHome()));
        });
     }
   }
