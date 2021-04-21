@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:xchat/inside/signin.dart';
+import 'package:xchat/inside/signup.dart';
 
 class Authnticate extends StatefulWidget {
   @override
@@ -6,11 +8,18 @@ class Authnticate extends StatefulWidget {
 }
 
 class _AuthnticateState extends State<Authnticate> {
-  
+  bool showSignIn=true;
+  void toggleview(){
+    setState(() {
+          showSignIn=!showSignIn;
+        });
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+     if(showSignIn){
+      return SignIn(toggleview);
+    }else{
+      return SignUp(toggleview);
+    }
   }
 }
