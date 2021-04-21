@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:xchat/helper/authnticate.dart';
 //import 'package:xchat/inside/signin.dart';
-import 'package:xchat/inside/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 //
 void main()async{
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 
       ),
-      home: SignUp(),
+      home: Authnticate(),
     );
   }
 }
