@@ -6,6 +6,8 @@ import 'package:xchat/inside/widgets/widget.dart';
 import 'package:xchat/services/auth.dart';
 
 class SignUp extends StatefulWidget {
+  final Function toggle;
+  SignUp(this.toggle);
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -83,7 +85,7 @@ class _SignUpState extends State<SignUp> {
                     ],
                   ),
                 ),
-                ///for space.Work like a line breaker
+                ///for spacing Work like a line breaker
                 SizedBox(
                   height: 8,
                 ),
