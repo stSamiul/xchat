@@ -153,16 +153,23 @@ class _SignUpState extends State<SignUp> {
                       "Allready have account? ",
                       style: simpleTextStyle(),
                     ),
-                    Text(
-                      "SignIn now",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        decoration: TextDecoration.underline,
+                    GestureDetector(
+                      onDoubleTap: (){
+                        widget.toggle();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          "Register now",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ]),
                 SizedBox(height: 120)
               ],
             )),
