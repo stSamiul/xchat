@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xchat/helper/authnticate.dart';
+import 'package:xchat/inside/search.dart';
 import 'package:xchat/services/auth.dart';
 
 class ChatHome extends StatefulWidget {
@@ -35,7 +36,7 @@ class _ChatHomeState extends State<ChatHome> {
   floatingActionButton: FloatingActionButton(
     child:Icon(Icons.search_off_rounded),
     onPressed: (){
-      
+      Navigator.push(context,MaterialPageRoute(builder: (context)=>SearchScren()));
     }, ),
       
     );
